@@ -10,6 +10,11 @@
     "prepare": "husky install"
   },
   "dependencies": {
+    "@emotion/react": "^11.11.0",
+    "@emotion/styled": "^11.11.0",
+    "@mui/material": "^5.13.3",
+    "@mui/styled-engine-sc": "^5.12.0",
+    "@prisma/client": "^4.14.1",
     "@types/node": "20.2.4",
     "@types/react": "18.2.7",
     "@types/react-dom": "18.2.4",
@@ -18,15 +23,19 @@
     "next": "13.4.4",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "styled-components": "^5.3.11",
     "typescript": "5.0.4"
   },
   "devDependencies": {
+    "@types/styled-components": "^5.1.26",
     "eslint-config-prettier": "^8.8.0",
     "eslint-plugin-prettier": "^4.2.1",
-    "husky": "^8.0.3",
-    "lint-staged": "^13.2.2",
     "prettier": "2.8.8",
     "prisma": "^4.14.1"
+  },
+  "optionalDependencies": {
+    "husky": "^8.0.3",
+    "lint-staged": "^13.2.2"
   },
   "lint-staged": {
     "**/*": "prettier --write --ignore-unknown"
