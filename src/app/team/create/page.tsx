@@ -1,11 +1,11 @@
 'use client';
 
 import { useState } from 'react';
-import { randomIntegerWithinRange } from '@/app/utils';
+import { randomIntegerWithinRange } from '@/utils/math';
 import { createTeam } from '@/helpers/db/dbHelper';
 import { Button, Input, TextField, Typography } from '@mui/material';
 import styled from 'styled-components';
-import PokemonCard from '@/components/PokemonCard';
+import PokemonCard from '@/components/pokemonCard';
 import { Ability, Type } from '@/types/types';
 
 type StateProperties = {

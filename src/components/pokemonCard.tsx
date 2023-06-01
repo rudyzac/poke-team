@@ -1,4 +1,3 @@
-import { capitalizeFirstLetter } from '@/app/utils';
 import { PropsWithChildren } from 'react';
 import {
   Card,
@@ -8,6 +7,7 @@ import {
   CardActions,
   Button,
 } from '@mui/material';
+import { capitalizeFirstLetter, formatList } from '@/utils/text';
 
 type PokemonCardProps = {
   pokedexNumber: number;
@@ -58,8 +58,3 @@ const Property = (props: PropsWithChildren) => (
 
 const formatData = (data: string | number): string =>
   data ? data.toString() : 'N/A';
-
-const formatList = (list: string[]): string[] =>
-  list.map((value, index) =>
-    index === list.length - 1 ? `${value}. ` : `${value}, `
-  );

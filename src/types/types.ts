@@ -1,3 +1,5 @@
+import { Prisma } from '@prisma/client';
+
 export type Ability = {
   ability: {
     name: string;
@@ -14,3 +16,7 @@ export type Type = {
     url: string;
   };
 };
+
+export type TeamWithMembers = Prisma.TeamGetPayload<{
+  include: { pokemon: true };
+}>;

@@ -28,3 +28,11 @@ export async function createTeam(data: FormData) {
     },
   });
 }
+
+export async function getAllTeams() {
+  return await prisma.team.findMany({
+    include: {
+      pokemon: true,
+    },
+  });
+}
