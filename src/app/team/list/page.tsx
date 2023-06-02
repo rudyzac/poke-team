@@ -41,7 +41,7 @@ export default function Page() {
   return (
     <>
       <header>
-        <Typography variant="h1">List</Typography>
+        <Typography variant="h1">Team list</Typography>
       </header>
 
       {teams.map(team => (
