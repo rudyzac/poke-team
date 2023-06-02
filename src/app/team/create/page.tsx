@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { TOTAL_NUMBER_OF_POKEMON } from '@/constants';
 import { randomIntegerWithinRange } from '@/utils/math';
 import { createTeam } from '@/helpers/db/dbHelper';
 import { Button, Input, TextField, Typography } from '@mui/material';
@@ -21,7 +22,6 @@ export default function Page() {
   const [teamMembers, setTeamMembers] = useState<StateProperties[]>([]);
 
   const addRandomTeamMember = () => {
-    const TOTAL_NUMBER_OF_POKEMON = 1008; // According to pokemon.com
     const randomPokemonNumber = randomIntegerWithinRange(
       1,
       TOTAL_NUMBER_OF_POKEMON
@@ -55,50 +55,53 @@ export default function Page() {
         <Typography variant="h1">Create Team</Typography>
       </header>
 
-      <form id="create-team-form" action={createTeam}>
-        <TextField
-          type="text"
-          name="name"
-          id="outlined-basic"
-          label="Team name"
-          variant="outlined"
-        />
-
-        {teamMembers.map((teamMember, index) => (
-          <Input
-            key={`${index}`}
-            type="hidden"
-            name={`team-member-${index}`}
-            id={`input-team-member-${index}`}
-            value={JSON.stringify(teamMember)}
+      <main>
+        <form id="create-team-form" action={createTeam}>
+          <TextField
+            required
+            type="text"
+            name="name"
+            id="outlined-basic"
+            label="Team name"
+            variant="outlined"
           />
-        ))}
-      </form>
 
-      <CardContainer>
-        {teamMembers.map(pokemon => (
-          <PokemonCard
-            key={pokemon.name}
-            pokedexNumber={pokemon.pokedexNumber}
-            name={pokemon.name}
-            baseExperience={pokemon.baseExperience}
-            imageUrl={pokemon.imageUrl}
-            abilities={pokemon.abilities}
-            types={pokemon.types}
-            deleteTeamMember={deleteTeamMember}
-          />
-        ))}
-      </CardContainer>
+          {teamMembers.map((teamMember, index) => (
+            <Input
+              key={`${index}`}
+              type="hidden"
+              name={`team-member-${index}`}
+              id={`input-team-member-${index}`}
+              value={JSON.stringify(teamMember)}
+            />
+          ))}
+        </form>
 
-      <ButtonContainer>
-        <Button variant="contained" onClick={addRandomTeamMember}>
-          {"Gotta catch'em all"}
-        </Button>
+        <CardContainer>
+          {teamMembers.map(pokemon => (
+            <PokemonCard
+              key={pokemon.name}
+              pokedexNumber={pokemon.pokedexNumber}
+              name={pokemon.name}
+              baseExperience={pokemon.baseExperience}
+              imageUrl={pokemon.imageUrl}
+              abilities={pokemon.abilities}
+              types={pokemon.types}
+              deleteTeamMember={deleteTeamMember}
+            />
+          ))}
+        </CardContainer>
 
-        <Button type="submit" form="create-team-form" variant="contained">
-          Create
-        </Button>
-      </ButtonContainer>
+        <ButtonContainer>
+          <Button variant="contained" onClick={addRandomTeamMember}>
+            {"Gotta catch'em all"}
+          </Button>
+
+          <Button type="submit" form="create-team-form" variant="contained">
+            Create
+          </Button>
+        </ButtonContainer>
+      </main>
     </>
   );
 }
