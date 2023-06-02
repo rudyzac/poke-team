@@ -57,14 +57,24 @@ export default function Page() {
 
       <main>
         <form id="create-team-form" action={createTeam}>
-          <TextField
-            required
-            type="text"
-            name="name"
-            id="outlined-basic"
-            label="Team name"
-            variant="outlined"
-          />
+          <InputContainer>
+            <TextField
+              required
+              type="text"
+              name="name"
+              id="outlined-basic"
+              label="Team name"
+              variant="outlined"
+            />
+
+            <Button variant="contained" onClick={addRandomTeamMember}>
+              {"Gotta catch'em all"}
+            </Button>
+
+            <Button type="submit" form="create-team-form" variant="contained">
+              Create
+            </Button>
+          </InputContainer>
 
           {teamMembers.map((teamMember, index) => (
             <Input
@@ -78,29 +88,22 @@ export default function Page() {
         </form>
 
         <CardContainer>
-          {teamMembers.map(pokemon => (
-            <PokemonCard
-              key={pokemon.name}
-              pokedexNumber={pokemon.pokedexNumber}
-              name={pokemon.name}
-              baseExperience={pokemon.baseExperience}
-              imageUrl={pokemon.imageUrl}
-              abilities={pokemon.abilities}
-              types={pokemon.types}
-              deleteTeamMember={deleteTeamMember}
-            />
-          ))}
+          {teamMembers
+            .slice()
+            .reverse()
+            .map(pokemon => (
+              <PokemonCard
+                key={pokemon.name}
+                pokedexNumber={pokemon.pokedexNumber}
+                name={pokemon.name}
+                baseExperience={pokemon.baseExperience}
+                imageUrl={pokemon.imageUrl}
+                abilities={pokemon.abilities}
+                types={pokemon.types}
+                deleteTeamMember={deleteTeamMember}
+              />
+            ))}
         </CardContainer>
-
-        <ButtonContainer>
-          <Button variant="contained" onClick={addRandomTeamMember}>
-            {"Gotta catch'em all"}
-          </Button>
-
-          <Button type="submit" form="create-team-form" variant="contained">
-            Create
-          </Button>
-        </ButtonContainer>
       </main>
     </>
   );
@@ -108,12 +111,13 @@ export default function Page() {
 
 const CardContainer = styled.div`
   display: flex;
-  flex-wrap: wrap;
+  overflow-x: auto;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.7rem;
+  padding: 0.5rem;
 `;
 
-const ButtonContainer = styled.div`
+const InputContainer = styled.div`
   display: flex;
   gap: 0.5rem;
 `;
