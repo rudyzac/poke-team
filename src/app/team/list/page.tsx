@@ -12,10 +12,6 @@ export default function Page() {
 
   useEffect(() => {
     getAllTeams()
-      .then(teams => {
-        console.log(teams);
-        return teams;
-      })
       .then(teams =>
         teams.sort((t1: Team, t2: Team) =>
           t1.createdAt > t2.createdAt ? -1 : 1
