@@ -1,7 +1,7 @@
 'use server';
 
-import { prisma } from '@/app/db';
-import { redis } from '@/app/redis';
+import { prisma } from '@/lib/db';
+import { redis } from '@/lib/redis';
 import { CACHE_ALL_TEAMS_KEY } from '@/constants';
 
 export async function createTeam(data: FormData) {
