@@ -1,6 +1,8 @@
 'use server';
 
 import { prisma } from '@/app/db';
+import { redis } from '@/app/redis';
+import { CACHE_ALL_TEAMS_KEY } from '@/constants';
 
 export async function createTeam(data: FormData) {
   const name = data.get('name')?.valueOf();
@@ -27,12 +29,23 @@ export async function createTeam(data: FormData) {
       },
     },
   });
+
+  await redis.del(CACHE_ALL_TEAMS_KEY);
 }
 
 export async function getAllTeams() {
-  return await prisma.team.findMany({
+  const cacheEntry = await redis.get(CACHE_ALL_TEAMS_KEY);
+  if (cacheEntry) {
+    return JSON.parse(cacheEntry);
+  }
+
+  const dbEntry = await prisma.team.findMany({
     include: {
       pokemon: true,
     },
   });
+
+  redis.set(CACHE_ALL_TEAMS_KEY, JSON.stringify(dbEntry));
+
+  return dbEntry;
 }

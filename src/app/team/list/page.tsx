@@ -5,14 +5,21 @@ import { Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { TeamWithMembers } from '@/types/types';
 import TeamCard from '@/components/teamCard';
+import { Team } from '@prisma/client';
 
 export default function Page() {
   const [teams, setTeams] = useState<TeamWithMembers[]>([]);
 
   useEffect(() => {
     getAllTeams()
+      .then(teams => {
+        console.log(teams);
+        return teams;
+      })
       .then(teams =>
-        teams.sort((t1, t2) => (t1.createdAt > t2.createdAt ? -1 : 1))
+        teams.sort((t1: Team, t2: Team) =>
+          t1.createdAt > t2.createdAt ? -1 : 1
+        )
       )
       .then(teams => setTeams(teams));
   }, [teams]);
