@@ -20,3 +20,12 @@ export type Type = {
 export type TeamWithMembers = Prisma.TeamGetPayload<{
   include: { pokemon: true };
 }>;
+
+export type TeamMember = {
+  pokedexNumber: number;
+  name: string;
+  baseExperience: number | null;
+  imageUrl: string;
+  abilities: string[];
+  types: string[];
+};

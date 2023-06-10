@@ -1,93 +1,52 @@
 'use client';
 
 import { useState } from 'react';
-import { TOTAL_NUMBER_OF_POKEMON } from '@/constants';
-import { randomIntegerWithinRange } from '@/utils/math';
+import PageHeader from '@/components/pageHeader';
+import InputGroup from '@/components/inputGroup';
 import { createTeam } from '@/helpers/db/dbHelper';
-import { Button, Input, TextField, Typography } from '@mui/material';
-import styled from 'styled-components';
+import { Input } from '@mui/material';
 import PokemonCard from '@/components/pokemonCard';
-import { Ability, Type } from '@/types/types';
-
-type StateProperties = {
-  pokedexNumber: number;
-  name: string;
-  baseExperience: number;
-  imageUrl: string;
-  abilities: string[];
-  types: string[];
-};
+import { TeamMember } from '@/types/types';
+import { addRandomTeamMember } from '@/utils/team';
+import { PokemonCardContainer } from '@/components/pokemonCardContainer';
+import { NEW_TEAM_MEMBER_NAME_PREFIX } from '@/constants/form';
 
 export default function Page() {
-  const [teamMembers, setTeamMembers] = useState<StateProperties[]>([]);
+  const [teamMembers, setTeamMembers] = useState<TeamMember[]>([]);
 
-  const addRandomTeamMember = () => {
-    const randomPokemonNumber = randomIntegerWithinRange(
-      1,
-      TOTAL_NUMBER_OF_POKEMON
-    );
-    const baseUrl = 'https://pokeapi.co/api/v2/pokemon/';
+  const FORM_ID = 'create-team-form';
 
-    fetch(`${baseUrl}${randomPokemonNumber}`)
-      .then(response => response.json())
-      .then(data =>
-        setTeamMembers([
-          ...teamMembers,
-          {
-            pokedexNumber: data.id,
-            name: data.name,
-            baseExperience: data.base_experience,
-            imageUrl: data.sprites.front_default,
-            abilities: data.abilities.map((a: Ability) => a.ability.name),
-            types: data.types.map((t: Type) => t.type.name),
-          },
-        ])
-      );
-  };
-
-  const deleteTeamMember = (id: number) => {
-    setTeamMembers(teamMembers.filter(x => x.pokedexNumber !== id));
+  const deleteTeamMember = (pokedexNumber: number) => {
+    setTeamMembers(teamMembers.filter(x => x.pokedexNumber !== pokedexNumber));
   };
 
   return (
     <>
-      <header>
-        <Typography variant="h1">Create Team</Typography>
-      </header>
+      <PageHeader text="Create Team" link={{ text: 'Home', url: '/' }} />
 
       <main>
         <form id="create-team-form" action={createTeam}>
-          <InputContainer>
-            <TextField
-              required
-              type="text"
-              name="name"
-              id="outlined-basic"
-              label="Team name"
-              variant="outlined"
-            />
-
-            <Button variant="contained" onClick={addRandomTeamMember}>
-              {"Gotta catch'em all"}
-            </Button>
-
-            <Button type="submit" form="create-team-form" variant="contained">
-              Create
-            </Button>
-          </InputContainer>
+          <InputGroup
+            textFieldProps={{ name: 'name', label: 'Team name' }}
+            additionalButtonProps={{
+              text: "Gotta catch'em all",
+              callback: () => addRandomTeamMember(teamMembers, setTeamMembers),
+            }}
+            submitButtonProps={{ text: 'Create', formId: FORM_ID }}
+          />
 
           {teamMembers.map((teamMember, index) => (
             <Input
               key={`${index}`}
               type="hidden"
-              name={`team-member-${index}`}
+              name={`${NEW_TEAM_MEMBER_NAME_PREFIX}${index}`}
               id={`input-team-member-${index}`}
               value={JSON.stringify(teamMember)}
             />
           ))}
         </form>
 
-        <CardContainer>
+        <PokemonCardContainer>
           {teamMembers
             .slice()
             .reverse()
@@ -96,28 +55,17 @@ export default function Page() {
                 key={pokemon.name}
                 pokedexNumber={pokemon.pokedexNumber}
                 name={pokemon.name}
-                baseExperience={pokemon.baseExperience}
+                baseExperience={
+                  pokemon.baseExperience ? pokemon.baseExperience : 0
+                }
                 imageUrl={pokemon.imageUrl}
                 abilities={pokemon.abilities}
                 types={pokemon.types}
                 deleteTeamMember={deleteTeamMember}
               />
             ))}
-        </CardContainer>
+        </PokemonCardContainer>
       </main>
     </>
   );
 }
-
-const CardContainer = styled.div`
-  display: flex;
-  overflow-x: auto;
-  align-items: center;
-  gap: 0.7rem;
-  padding: 0.5rem;
-`;
-
-const InputContainer = styled.div`
-  display: flex;
-  gap: 0.5rem;
-`;

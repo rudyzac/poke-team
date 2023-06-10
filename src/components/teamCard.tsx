@@ -1,6 +1,5 @@
 import {
   Avatar,
-  Button,
   Card,
   CardContent,
   CardHeader,
@@ -11,8 +10,10 @@ import React from 'react';
 import styled from 'styled-components';
 import FilterBox, { ALL_CATEGORIES } from './filterBox';
 import { formatList } from '@/utils/text';
+import Link from 'next/link';
 
 type TeamCardProps = {
+  teamId: string;
   name: string;
   members: Pokemon[];
   imageUrls: string[];
@@ -28,11 +29,7 @@ export default function TeamCard(props: TeamCardProps) {
       <CardHeader
         title={props.name}
         titleTypographyProps={{ variant: 'h5' }}
-        action={
-          <>
-            <Button>Edit</Button>
-          </>
-        }
+        action={<Link href={`/team/edit/${props.teamId}`}>Edit</Link>}
       />
 
       <hr />

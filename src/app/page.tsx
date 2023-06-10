@@ -1,14 +1,12 @@
 'use client';
 
-import { Typography } from '@mui/material';
+import PageHeader from '@/components/pageHeader';
 import Link from 'next/link';
 
 export default function Home() {
   return (
     <>
-      <header>
-        <Typography variant="h1">Poké Team</Typography>
-      </header>
+      <PageHeader text="Poké Team" />
 
       <main>
         <ul>

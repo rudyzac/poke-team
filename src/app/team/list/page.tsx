@@ -1,9 +1,9 @@
 'use client';
 
-import { getAllTeams } from '@/helpers/db/dbHelper';
-import { Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { TeamWithMembers } from '@/types/types';
+import { getAllTeams } from '@/helpers/db/dbHelper';
+import PageHeader from '@/components/pageHeader';
 import TeamCard from '@/components/teamCard';
 import { Team } from '@prisma/client';
 
@@ -36,13 +36,12 @@ export default function Page() {
 
   return (
     <>
-      <header>
-        <Typography variant="h1">Team list</Typography>
-      </header>
+      <PageHeader text="Team list" link={{ text: 'Home', url: '/' }} />
 
       {teams.map(team => (
         <TeamCard
           key={team.id}
+          teamId={team.id}
           name={team.name}
           members={team.pokemon}
           imageUrls={team.pokemon.map(p => p.imageUrl)}
